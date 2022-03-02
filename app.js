@@ -1,8 +1,5 @@
 const express = require('express');
 const app = express();
-var axios = require('axios');
-var qs = require('qs');
-var parseString = require('xml2js').parseString;
 var bodyParser = require('body-parser')
 
 app.use(express.static('public'));

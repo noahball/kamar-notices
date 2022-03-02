@@ -1,0 +1,22 @@
+{
+  "name": "kamar-notices",
+  "version": "1.0.0",
+  "description": "A simple website that cycles through KAMAR notices.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noahball/kamar-notices.git"
+  },
+  "author": "Noah Ball",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noahball/kamar-notices/issues"
+  },
+  "homepage": "https://github.com/noahball/kamar-notices#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}

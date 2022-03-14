@@ -12,6 +12,6 @@ var notices = require('./routes/notices.js')
 
 app.get('/api/v1/notices', notices)
 
-app.listen(3000, () => {
-    console.log(`KAMAR Notices Service running on port 3000.`); // Run!
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`KAMAR Notices Service running on port ${process.env.PORT || 3000}.`); // Run!
 });

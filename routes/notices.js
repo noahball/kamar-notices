@@ -68,7 +68,36 @@ router.get('/api/v1/notices', function (req, res) {
             .then(function (response) {
               var data = response.data;
               var result = convert.xml2json(data, {compact: true, spaces: 4});
-              res.send(result);
+              var notices = JSON.parse(result)
+
+              // .NoticesResults.NumberRecords._text
+
+              var num = 0
+
+              var json = {
+                meta: {
+                  length: notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text,
+                  date: notices.NoticesResults.NoticeDate._text
+                }
+              }
+
+              for (let i = 0; i < notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text; i++) {
+                // json.notices[i].teacher = notices.NoticesResults.GeneralNotices.General[i].Teacher._text
+                // json.notices[i].title = notices.NoticesResults.GeneralNotices.General[i].Subject._text
+                // json.notices[i].body = notices.NoticesResults.GeneralNotices.General[i].Body._text
+
+                Object.assign(json, {
+                  [i]: {
+                      level: notices.NoticesResults.GeneralNotices.General[i].Level._text,
+                      teacher: notices.NoticesResults.GeneralNotices.General[i].Teacher._text,
+                      title: notices.NoticesResults.GeneralNotices.General[i].Subject._text,
+                      body: notices.NoticesResults.GeneralNotices.General[i].Body._text
+                  }
+              });
+              }
+
+              res.send(JSON.stringify(json))
+
             })
             .catch(function (error) {
               console.log(error);

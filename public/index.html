@@ -1,1 +1,98 @@
-<h1>KAMAR Notices Service</h1>
+<!DOCTYPE html>
+
+<head>
+    <title>KAMAR Notices Service</title>
+    <link rel="stylesheet" href="https://use.typekit.net/buu6mdm.css">
+    <link rel="stylesheet" href="/css/please-wait.css">
+    <link rel="stylesheet" href="/css/spinkit.min.css">
+    <script src="/js/please-wait.min.js"></script>
+    <style>
+        body {
+            background-color: #00322e;
+            color: #ead447;
+            font-family: bree, sans-serif;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .notice {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .title {
+            margin-bottom: 0;
+            margin-top: 0;
+            font-size: 3.5rem;
+        }
+
+        .body {
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .teacher {
+            margin-bottom: 0;
+            font-size: 1.7rem;
+        }
+
+        .kamar {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notice">
+        <h3 class="teacher"><span id="teacher"></span> - <span id="level"></span></h3>
+        <h1 class="title" id="title"></h1>
+        <p class="body" id="body"></p>
+        <p class="kamar">Notices feed via KAMAR</p>
+        <div id="sequence"></div>
+    </div>
+
+    <script>
+        loader = pleaseWait({
+            logo: "/img/aquinas-loader.png",
+            backgroundColor: '#00322e',
+            loadingHtml: "<center><h1 style=\"color: #FFFFFF !important;\">Talking to KAMAR...</h1><div class=\"sk-wave\"> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div></div><center>"
+        });
+
+        let notices = fetch("http://localhost:3000/api/v1/notices");
+
+        notices.then(res =>
+            res.json()).then(notices => {
+            textSequence(0);
+            loader.finish()
+
+            function textSequence(i) {
+
+                if (notices.meta.totalGeneralNotices > i) {
+                    document.getElementById("teacher").innerHTML = notices.generalNotices[i + 1].teacher;
+                    document.getElementById('level').innerHTML = notices.generalNotices[i + 1].level;
+                    document.getElementById('title').innerHTML = notices.generalNotices[i + 1].title;
+                    document.getElementById('body').innerHTML = notices.generalNotices[i + 1].body;
+
+                    setTimeout(function () {
+                        document.getElementById("teacher").innerHTML = notices.generalNotices[i + 2]
+                            .teacher;
+                        document.getElementById('level').innerHTML = notices.generalNotices[i + 2]
+                            .level;
+                        document.getElementById('title').innerHTML = notices.generalNotices[i + 2]
+                            .title;
+                        document.getElementById('body').innerHTML = notices.generalNotices[i + 2].body;
+                        textSequence(++i);
+                    }, 5000); // 1 second (in milliseconds)
+
+                } else if (notices.meta.totalGeneralNotices == [i - 1]) { // Loop
+                    textSequence(0);
+                }
+
+            }
+        })
+    </script>
+</body>

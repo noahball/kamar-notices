@@ -11,7 +11,7 @@ router.get('/api/v1/notices', function (req, res) {
     'Command': 'Logon',
     'Key': 'vtku',
     'Username': 'noah.ball',
-    'Password': 'studentPassword'
+    'Password': process.env.password
     //'Username': 'web.student',
     //'Password': 'student' 
   });

@@ -67,7 +67,10 @@ router.get('/api/v1/notices', function (req, res) {
           axios(config)
             .then(function (response) {
               var data = response.data;
-              var result = convert.xml2json(data, {compact: true, spaces: 4});
+              var result = convert.xml2json(data, {
+                compact: true,
+                spaces: 4
+              });
               var notices = JSON.parse(result)
 
               // .NoticesResults.NumberRecords._text
@@ -76,8 +79,16 @@ router.get('/api/v1/notices', function (req, res) {
 
               var json = {
                 meta: {
-                  length: notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text,
-                  date: notices.NoticesResults.NoticeDate._text
+                  totalGeneralNotices: notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text,
+                  totalMeetingNotices: notices.NoticesResults.MeetingNotices.NumberMeetingRecords._text,
+                  totalNotices: notices.NoticesResults.NumberRecords._text,
+                  date: notices.NoticesResults.NoticeDate._text,
+                },
+                generalNotices: {
+
+                },
+                meetingNotices: {
+
                 }
               }
 
@@ -86,21 +97,42 @@ router.get('/api/v1/notices', function (req, res) {
                 // json.notices[i].title = notices.NoticesResults.GeneralNotices.General[i].Subject._text
                 // json.notices[i].body = notices.NoticesResults.GeneralNotices.General[i].Body._text
 
-                Object.assign(json, {
-                  [i]: {
-                      level: notices.NoticesResults.GeneralNotices.General[i].Level._text,
-                      teacher: notices.NoticesResults.GeneralNotices.General[i].Teacher._text,
-                      title: notices.NoticesResults.GeneralNotices.General[i].Subject._text,
-                      body: notices.NoticesResults.GeneralNotices.General[i].Body._text
+                Object.assign(json.generalNotices, {
+                  [i + 1]: {
+                    level: notices.NoticesResults.GeneralNotices.General[i].Level._text,
+                    teacher: notices.NoticesResults.GeneralNotices.General[i].Teacher._text,
+                    title: notices.NoticesResults.GeneralNotices.General[i].Subject._text,
+                    body: notices.NoticesResults.GeneralNotices.General[i].Body._text
                   }
-              });
+                });
+              }
+
+              for (let i = 0; i < notices.NoticesResults.MeetingNotices.NumberMeetingRecords._text; i++) {
+                // json.notices[i].teacher = notices.NoticesResults.GeneralNotices.General[i].Teacher._text
+                // json.notices[i].title = notices.NoticesResults.GeneralNotices.General[i].Subject._text
+                // json.notices[i].body = notices.NoticesResults.GeneralNotices.General[i].Body._text
+
+                Object.assign(json.meetingNotices, {
+                  [i + 1]: {
+                    level: notices.NoticesResults.MeetingNotices.Meeting[i].Level._text,
+                    teacher: notices.NoticesResults.MeetingNotices.Meeting[i].Teacher._text,
+                    title: notices.NoticesResults.MeetingNotices.Meeting[i].Subject._text,
+                    body: notices.NoticesResults.MeetingNotices.Meeting[i].Body._text,
+                    placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].PlaceMeet._text,
+                    placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].DateMeet._text,
+                    placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].TimeMeet._text
+                  }
+                });
               }
 
               res.send(JSON.stringify(json))
 
             })
             .catch(function (error) {
-              console.log(error);
+              res.send(JSON.stringify({
+                status: 'error',
+                error: notices.NoticesResults.Error[0]
+              }))
             });
         } else {
           res.send(JSON.stringify({

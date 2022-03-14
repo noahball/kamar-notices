@@ -62,7 +62,7 @@
             loadingHtml: "<center><h1 style=\"color: #FFFFFF !important;\">Talking to KAMAR...</h1><div class=\"sk-wave\"> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div></div><center>"
         });
 
-        let notices = fetch("http://localhost:3000/api/v1/notices");
+        let notices = fetch("/api/v1/notices");
 
         notices.then(res =>
             res.json()).then(notices => {

@@ -78,17 +78,14 @@
                     document.getElementById('body').innerHTML = notices.generalNotices[i + 1].body;
 
                     setTimeout(function () {
-                        document.getElementById('teacher').innerHTML = notices.generalNotices[i + 2]
-                            .teacher;
-                        document.getElementById('level').innerHTML = notices.generalNotices[i + 2]
-                            .level;
-                        document.getElementById('title').innerHTML = notices.generalNotices[i + 2]
-                            .title;
-                        document.getElementById('body').innerHTML = notices.generalNotices[i + 2].body;
+                        document.getElementById('teacher').innerHTML = notices.generalNotices[i + 1].teacher;
+                        document.getElementById('level').innerHTML = notices.generalNotices[i + 1].level;
+                        document.getElementById('title').innerHTML = notices.generalNotices[i + 1].title;
+                        document.getElementById('body').innerHTML = notices.generalNotices[i + 1].body;
                         textSequence(++i);
                     }, 5000); // 1 second (in milliseconds)
 
-                } else if (notices.meta.totalGeneralNotices == [i - 1]) { // Loop
+                } else if (notices.meta.totalGeneralNotices == i) { // Loop
                     textSequence(0);
                 }
 

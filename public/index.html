@@ -43,12 +43,16 @@
         .kamar {
             margin-top: 0;
         }
+
+        #meet {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
     <div class="notice">
-        <h3 class="teacher"><span id="teacher"></span> - <span id="level"></span></h3>
+        <h3 class="teacher">Posted by <span id="teacher"></span> for <span id="level"></span><span id="meet"><br><span id="placeMeet"></span> at <span id="timeMeet"></span> on <span id="dateMeet"></span></span></h3>
         <h1 class="title" id="title"></h1>
         <p class="body" id="body"></p>
         <div id="sequence"></div>
@@ -56,9 +60,9 @@
 
     <script>
         loader = pleaseWait({
-            logo: "/img/aquinas-loader.png",
+            logo: "/img/loader-img.png",
             backgroundColor: '#00322e',
-            loadingHtml: "<center><h1 style=\"color: #FFFFFF !important; font-size: 5.5rem;\">Talking to KAMAR...</h1><div class=\"sk-wave\"> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div></div><center>"
+            loadingHtml: "<center><!--<h1 style=\"color: #ead447 !important; font-size: 5.5rem;\">Talking to KAMAR...</h1>--><div class=\"sk-wave\"> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div> <div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div><div class=\"sk-wave-rect\"></div></div><center>"
         });
 
         let notices = fetch("/api/v1/notices");
@@ -70,21 +74,51 @@
 
             function textSequence(i) {
 
-                if (notices.meta.totalGeneralNotices > i) {
-                    document.getElementById("teacher").innerHTML = notices.generalNotices[i + 1].teacher;
-                    document.getElementById('level').innerHTML = notices.generalNotices[i + 1].level;
-                    document.getElementById('title').innerHTML = notices.generalNotices[i + 1].title;
-                    document.getElementById('body').innerHTML = notices.generalNotices[i + 1].body;
+                if (notices.meta.totalNotices > i) {
+                    if (notices.notices[i + 1].type == 'general') {
+                        document.getElementById('meet').style.display = 'none';
+                        document.getElementById("teacher").innerHTML = notices.notices[i + 1].teacher;
+                        document.getElementById('level').innerHTML = notices.notices[i + 1].level;
+                        document.getElementById('title').innerHTML = notices.notices[i + 1].title;
+                        document.getElementById('body').innerHTML = notices.notices[i + 1].body;
+                    } else {
+                        document.getElementById("teacher").innerHTML = notices.notices[i + 1].teacher;
+                        document.getElementById('level').innerHTML = notices.notices[i + 1].level;
+                        document.getElementById('title').innerHTML = notices.notices[i + 1].title;
+                        document.getElementById('body').innerHTML = notices.notices[i + 1].body;
+                        document.getElementById('placeMeet').innerHTML = notices.notices[i + 1].placeMeet;
+                        document.getElementById('dateMeet').innerHTML = notices.notices[i + 1].dateMeet;
+                        document.getElementById('timeMeet').innerHTML = notices.notices[i + 1].timeMeet;
+                        document.getElementById('meet').style.display = 'inline'
+                    }
 
                     setTimeout(function () {
-                        document.getElementById('teacher').innerHTML = notices.generalNotices[i + 1].teacher;
-                        document.getElementById('level').innerHTML = notices.generalNotices[i + 1].level;
-                        document.getElementById('title').innerHTML = notices.generalNotices[i + 1].title;
-                        document.getElementById('body').innerHTML = notices.generalNotices[i + 1].body;
+                        if (notices.notices[i + 1].type == 'general') {
+                            document.getElementById('meet').style.display = 'none';
+                            document.getElementById("teacher").innerHTML = notices.notices[i + 1]
+                                .teacher;
+                            document.getElementById('level').innerHTML = notices.notices[i + 1].level;
+                            document.getElementById('title').innerHTML = notices.notices[i + 1].title;
+                            document.getElementById('body').innerHTML = notices.notices[i + 1].body;
+                        } else {
+                            document.getElementById("teacher").innerHTML = notices.notices[i + 1]
+                                .teacher;
+                            document.getElementById('level').innerHTML = notices.notices[i + 1].level;
+                            document.getElementById('title').innerHTML = notices.notices[i + 1].title;
+                            document.getElementById('body').innerHTML = notices.notices[i + 1].body;
+                            document.getElementById('placeMeet').innerHTML = notices.notices[i + 1]
+                                .placeMeet;
+                            document.getElementById('dateMeet').innerHTML = notices.notices[i + 1]
+                                .dateMeet;
+                            document.getElementById('timeMeet').innerHTML = notices.notices[i + 1]
+                                .timeMeet;
+                            document.getElementById('meet').style.display = 'inline'
+                        }
                         textSequence(++i);
-                    }, 9000); // 1 second (in milliseconds)
+                    }, 8000); // 1 second (in milliseconds)
 
-                } else if (notices.meta.totalGeneralNotices == i) { // Loop
+                } else if (notices.meta.totalNotices == i) { // Loop
+                    document.getElementById('meet').style.display = 'none';
                     textSequence(0);
                 }
 

@@ -84,10 +84,7 @@ router.get('/api/v1/notices', function (req, res) {
                   totalNotices: notices.NoticesResults.NumberRecords._text,
                   date: notices.NoticesResults.NoticeDate._text,
                 },
-                generalNotices: {
-
-                },
-                meetingNotices: {
+                notices: {
 
                 }
               }
@@ -97,8 +94,9 @@ router.get('/api/v1/notices', function (req, res) {
                 // json.notices[i].title = notices.NoticesResults.GeneralNotices.General[i].Subject._text
                 // json.notices[i].body = notices.NoticesResults.GeneralNotices.General[i].Body._text
 
-                Object.assign(json.generalNotices, {
+                Object.assign(json.notices, {
                   [i + 1]: {
+                    type: 'general',
                     level: notices.NoticesResults.GeneralNotices.General[i].Level._text,
                     teacher: notices.NoticesResults.GeneralNotices.General[i].Teacher._text,
                     title: notices.NoticesResults.GeneralNotices.General[i].Subject._text,
@@ -112,15 +110,16 @@ router.get('/api/v1/notices', function (req, res) {
                 // json.notices[i].title = notices.NoticesResults.GeneralNotices.General[i].Subject._text
                 // json.notices[i].body = notices.NoticesResults.GeneralNotices.General[i].Body._text
 
-                Object.assign(json.meetingNotices, {
-                  [i + 1]: {
+                Object.assign(json.notices, {
+                  [parseInt(notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text) + i + 1]: {
+                    type: 'meeting',
                     level: notices.NoticesResults.MeetingNotices.Meeting[i].Level._text,
                     teacher: notices.NoticesResults.MeetingNotices.Meeting[i].Teacher._text,
                     title: notices.NoticesResults.MeetingNotices.Meeting[i].Subject._text,
                     body: notices.NoticesResults.MeetingNotices.Meeting[i].Body._text,
                     placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].PlaceMeet._text,
-                    placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].DateMeet._text,
-                    placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].TimeMeet._text
+                    dateMeet: notices.NoticesResults.MeetingNotices.Meeting[i].DateMeet._text,
+                    timeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].TimeMeet._text
                   }
                 });
               }

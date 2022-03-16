@@ -130,7 +130,7 @@ router.get('/api/v1/notices', function (req, res) {
             .catch(function (error) {
               res.send(JSON.stringify({
                 status: 'error',
-                error: notices.NoticesResults.Error[0]
+                error: error
               }))
             });
         } else {

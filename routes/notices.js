@@ -3,7 +3,8 @@ var router = express.Router()
 
 var axios = require('axios');
 var qs = require('qs');
-var convert = require('xml-js')
+var convert = require('xml-js');
+const { processors } = require('xml2js');
 var parseString = require('xml2js').parseString;
 
 router.get('/api/v1/notices', function (req, res) {
@@ -109,19 +110,33 @@ router.get('/api/v1/notices', function (req, res) {
                 // json.notices[i].teacher = notices.NoticesResults.GeneralNotices.General[i].Teacher._text
                 // json.notices[i].title = notices.NoticesResults.GeneralNotices.General[i].Subject._text
                 // json.notices[i].body = notices.NoticesResults.GeneralNotices.General[i].Body._text
-
-                Object.assign(json.notices, {
-                  [parseInt(notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text) + i + 1]: {
-                    type: 'meeting',
-                    level: notices.NoticesResults.MeetingNotices.Meeting[i].Level._text,
-                    teacher: notices.NoticesResults.MeetingNotices.Meeting[i].Teacher._text,
-                    title: notices.NoticesResults.MeetingNotices.Meeting[i].Subject._text,
-                    body: notices.NoticesResults.MeetingNotices.Meeting[i].Body._text,
-                    placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].PlaceMeet._text,
-                    dateMeet: notices.NoticesResults.MeetingNotices.Meeting[i].DateMeet._text,
-                    timeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].TimeMeet._text
-                  }
-                });
+                if (notices.NoticesResults.MeetingNotices.NumberMeetingRecords._text == 1) {
+                  Object.assign(json.notices, {
+                    [parseInt(notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text) + i + 1]: {
+                      type: 'meeting',
+                      level: notices.NoticesResults.MeetingNotices.Meeting.Level._text,
+                      teacher: notices.NoticesResults.MeetingNotices.Meeting.Teacher._text,
+                      title: notices.NoticesResults.MeetingNotices.Meeting.Subject._text,
+                      body: notices.NoticesResults.MeetingNotices.Meeting.Body._text,
+                      placeMeet: notices.NoticesResults.MeetingNotices.Meeting.PlaceMeet._text,
+                      dateMeet: notices.NoticesResults.MeetingNotices.Meeting.DateMeet._text,
+                      timeMeet: notices.NoticesResults.MeetingNotices.Meeting.TimeMeet._text
+                    }
+                  });
+                } else {
+                  Object.assign(json.notices, {
+                    [parseInt(notices.NoticesResults.GeneralNotices.NumberGeneralRecords._text) + i + 1]: {
+                      type: 'meeting',
+                      level: notices.NoticesResults.MeetingNotices.Meeting[i].Level._text,
+                      teacher: notices.NoticesResults.MeetingNotices.Meeting[i].Teacher._text,
+                      title: notices.NoticesResults.MeetingNotices.Meeting[i].Subject._text,
+                      body: notices.NoticesResults.MeetingNotices.Meeting[i].Body._text,
+                      placeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].PlaceMeet._text,
+                      dateMeet: notices.NoticesResults.MeetingNotices.Meeting[i].DateMeet._text,
+                      timeMeet: notices.NoticesResults.MeetingNotices.Meeting[i].TimeMeet._text
+                    }
+                  });
+                }
               }
 
               res.send(JSON.stringify(json))

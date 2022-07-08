@@ -76,9 +76,9 @@
             function textSequence(i) {
 
                 if (notices.meta.totalNotices == 0) {
-                    document.getElementById("teacher").innerHTML = 'KAMAR';
+                    document.getElementById("teacher").innerHTML = 'SYSTEM';
                     document.getElementById('level').innerHTML = 'All';
-                    document.getElementById('title').innerHTML = 'No notices today';
+                    document.getElementById('title').innerHTML = 'Welcome to the Aquinas Action Centre';
                     document.getElementById('body').innerHTML = 'There are no notices on KAMAR today.';
                 } else if (notices.meta.totalNotices > i) {
                     if (notices.notices[i + 1].type == 'general') {

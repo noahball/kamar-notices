@@ -22,7 +22,7 @@ router.get('/api/v1/notices', function (req, res) {
     url: 'https://kamarportal.aquinas.school.nz/api/api.php',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'User-Agent': 'Gym TV MagicInfo',
+      'User-Agent': 'Gym TV Notices API',
       'Origin': 'file://',
       'X-Requested-With': 'nz.co.KAMAR'
     },
@@ -58,7 +58,7 @@ router.get('/api/v1/notices', function (req, res) {
             url: 'https://kamarportal.aquinas.school.nz/api/api.php',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
-              'User-Agent': 'Gym TV MagicInfo',
+              'User-Agent': 'Gym TV Notices API',
               'Origin': 'file://',
               'X-Requested-With': 'nz.co.KAMAR'
             },

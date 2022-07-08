@@ -1,2 +1,3 @@
 node_modules
 config.sample.js
+.DS_Store

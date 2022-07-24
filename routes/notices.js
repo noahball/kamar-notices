@@ -157,7 +157,29 @@ router.get('/api/v1/notices', function (req, res) {
       });
     })
     .catch(function (error) {
-      console.log(error);
+      var json = {
+        meta: {
+          totalGeneralNotices: 1,
+          totalMeetingNotices: 0,
+          totalNotices: 1,
+          date: "0",
+        },
+        notices: {
+
+        }
+      }
+
+      Object.assign(json.notices, {
+        [1]: {
+          type: 'general',
+          level: "All",
+          teacher: "System",
+          title: "Something went wrong",
+          body: `Error during HTTP GET request to https://kamarportal.aquinas.school.nz/api/api.php<br>${error}`
+        }
+      });
+
+      res.send(JSON.stringify(json))
     });
 });
 
